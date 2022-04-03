@@ -1,11 +1,6 @@
-body {
-  background-color: green;
-}
+
 
 .todo-item{
   padding: 5px;
-  color: tomato;
-  background: teal;
-  display: flex;
-  gap: 5px;
+  /* color: tomato; */
 }

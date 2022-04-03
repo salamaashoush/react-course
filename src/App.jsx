@@ -1,25 +1,33 @@
-import { useState } from "react";
-import { TodoInput } from "./TodoInput";
-import { TodoList } from "./TodoList";
-
+import { useState, useEffect } from "react";
+import { Dashboard } from "./pages/Dashboard";
+import { TodoInput } from "./components/TodoInput";
+import { TodoList } from "./components/TodoList";
+import { TodosHome } from "./pages/TodosHome";
+import { useTodos } from "./hooks/useTodos";
+import { TodosContext, TodosProvider } from "./todosContext";
+import { Blog } from "./pages/Blog";
+import { Link, Route, Routes } from "react-router-dom";
+import { Home } from "./pages/Home";
+import { ViewPost } from "./pages/ViewPost";
 function App() {
-  const [todos, setTodos] = useState(["Item 1", "Item 2"]);
+  const todosApi = useTodos();
+  const [username, setUserName] = useState("Salama");
+  const [page, setPage] = useState("todos");
 
-  const handleDelete = (index) =>
-    setTodos(todos.filter((item, i) => i !== index));
   return (
-    <div>
-      <h1>Todo App</h1>
-      <TodoInput
-        onAdd={(value) => {
-          if (value) {
-            setTodos([...todos, value]);
-          }
-        }}
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="blog" element={<Blog />} />
+      <Route
+        path="todos"
+        element={
+          <TodosProvider value={{ ...todosApi, username }}>
+            <TodosHome />
+          </TodosProvider>
+        }
       />
-      <TodoList items={todos} onDelete={handleDelete} />
-      {todos.length >= 2 && <h1>Greater than 2</h1>}
-    </div>
+      <Route path="blog/:postId" element={<ViewPost />} />
+    </Routes>
   );
 }
 
